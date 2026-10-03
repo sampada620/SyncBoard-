@@ -11,18 +11,22 @@ export default function Home() {
   };
 
   return (
-    <section id="center">
-      <h1>Welcome, {user?.name}!</h1>
-      <p>You're logged in as {user?.email}</p>
-      <button type="button" onClick={() => navigate('/board')}>
-        🎨 Open Board
-      </button>
-      <button type="button" onClick={() => navigate('/boards')} style={{ marginLeft: '8px' }}>
-        📋 My Boards
-      </button>
-      <button type="button" onClick={handleLogout} style={{ marginLeft: '8px' }}>
-        Logout
-      </button>
+    <section id="center" className="home">
+      <div className="home-card">
+        <h1>Welcome, {user?.name}!</h1>
+        <p>You're logged in as {user?.email}</p>
+        <div className="home-actions">
+          <button type="button" className="btn btn-primary" onClick={() => navigate('/board')}>
+            🎨 Open Board
+          </button>
+          <button type="button" className="btn" onClick={() => navigate('/boards')}>
+            📋 My Boards
+          </button>
+          <button type="button" className="btn btn-ghost" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

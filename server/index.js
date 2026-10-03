@@ -14,11 +14,17 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 
+// Allowed origins: read from env (comma-separated) or fall back to localhost for local dev
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
+  : ["http://localhost:5173", "http://localhost:5174"];
+
 // Socket.io initialization with CORS
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: ALLOWED_ORIGINS,
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -75,7 +81,12 @@ io.on("connection", (socket) => {
 });
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: ALLOWED_ORIGINS,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Test route (public)

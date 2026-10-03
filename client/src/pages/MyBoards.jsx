@@ -35,69 +35,57 @@ export default function MyBoards() {
 
   return (
     <div id="my-boards-page">
-      {/* Header: who's logged in + nav buttons + logout */}
-      <div id="board-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', borderBottom: '1px solid #ddd' }}>
-        <span>
-          <strong>SyncBoard</strong> — {user?.name} ({user?.email})
+      <div id="my-boards-header">
+        <span className="brand">
+          SyncBoard <span>— {user?.name}</span>
         </span>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button type="button" onClick={() => navigate('/')}>
+        <div className="nav-group">
+          <button type="button" className="btn btn-sm" onClick={() => navigate('/')}>
             🏠 Home
           </button>
-          <button type="button" onClick={() => navigate('/board')}>
+          <button type="button" className="btn btn-sm" onClick={() => navigate('/board')}>
             ➕ New Board
           </button>
-          <button type="button" onClick={handleLogout}>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={handleLogout}>
             Logout
           </button>
         </div>
       </div>
 
-      <section id="my-boards" style={{ padding: '16px' }}>
+      <section id="my-boards">
         <h1>My Boards</h1>
-        <p>
-          Load a saved board to continue drawing, or delete a board you no longer need.
-        </p>
+        <p>Load a saved board to continue drawing, or delete one you no longer need.</p>
 
         {loading ? (
-          <p style={{ padding: '16px' }}>Loading boards…</p>
+          <p className="empty-state">Loading boards…</p>
         ) : boards.length === 0 ? (
-          <p style={{ padding: '16px' }}>
-            No boards yet. <button type="button" onClick={() => navigate('/board')}>Start a new board</button>.
-          </p>
+          <div className="empty-state">
+            <p>No boards yet.</p>
+            <button type="button" className="btn btn-primary" onClick={() => navigate('/board')}>
+              Start a new board
+            </button>
+          </div>
         ) : (
-          <div style={{ display: 'grid', gap: '8px' }}>
+          <div className="boards-grid">
             {boards.map((board) => (
-              <div
-                key={board._id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '8px 12px',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  marginBottom: '8px',
-                }}
-              >
-                <span>
-                  <strong>{board.title || 'Untitled Board'}</strong>
-                  <div style={{ fontSize: '12px', color: '#666' }}>
-                    Updated: {new Date(board.updatedAt).toLocaleString()}
-                  </div>
-                </span>
-                <span style={{ display: 'flex', gap: '8px' }}>
-                  <button type="button" onClick={() => navigate(`/board?id=${board._id}`)}>
+              <div key={board._id} className="board-card">
+                <div className="title">{board.title || 'Untitled Board'}</div>
+                <div className="meta">
+                  Updated: {new Date(board.updatedAt).toLocaleString()}
+                </div>
+                <div className="card-actions">
+                  <button type="button" className="btn btn-primary btn-sm" onClick={() => navigate(`/board?id=${board._id}`)}>
                     Load
                   </button>
                   <button
                     type="button"
+                    className="btn btn-danger btn-sm"
                     disabled={deleting === board._id}
                     onClick={() => handleDelete(board._id)}
                   >
                     Delete
                   </button>
-                </span>
+                </div>
               </div>
             ))}
           </div>

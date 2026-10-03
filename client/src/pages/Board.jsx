@@ -25,7 +25,6 @@ export default function Board() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Load an existing board when the id query param is present
   useEffect(() => {
     if (!boardId) {
       setSavedStrokes([]);
@@ -58,49 +57,30 @@ export default function Board() {
 
   return (
     <div id="board-page">
-      {/* Header: user info + navigation + actions */}
-      <div
-        id="board-header"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '8px 12px',
-          borderBottom: '1px solid #ddd',
-          flexWrap: 'wrap',
-          gap: '8px',
-        }}
-      >
-        <span>
-          <strong>SyncBoard</strong> — {user?.name} ({user?.email})
-          {boardId && (
-            <span style={{ marginLeft: '8px', color: '#666', fontSize: '13px' }}>
-              Room ID: <code>{boardId}</code>
-            </span>
-          )}
+      <div id="board-header">
+        <span className="brand">
+          SyncBoard <span>— {user?.name}</span>
         </span>
-
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div className="nav-group">
           {boardId && (
-            <button id="btn-copy-link" type="button" onClick={copyShareLink}>
+            <button id="btn-copy-link" type="button" className="btn btn-sm" onClick={copyShareLink}>
               {copied ? '✅ Link Copied!' : '🔗 Share Link'}
             </button>
           )}
-          <button id="btn-my-boards" type="button" onClick={() => navigate('/boards')}>
+          <button id="btn-my-boards" type="button" className="btn btn-sm" onClick={() => navigate('/boards')}>
             📋 My Boards
           </button>
-          <button id="btn-new-board" type="button" onClick={() => navigate('/board')}>
+          <button id="btn-new-board" type="button" className="btn btn-sm" onClick={() => navigate('/board')}>
             ➕ New Board
           </button>
-          <button id="btn-logout" type="button" onClick={handleLogout}>
+          <button id="btn-logout" type="button" className="btn btn-ghost btn-sm" onClick={handleLogout}>
             Logout
           </button>
         </div>
       </div>
 
-      {/* Canvas drawing area */}
       {loading ? (
-        <p style={{ padding: '16px' }}>Loading board…</p>
+        <p className="empty-state">Loading board…</p>
       ) : (
         <Whiteboard
           savedStrokes={savedStrokes}
